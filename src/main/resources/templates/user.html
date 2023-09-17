@@ -1,20 +1,3 @@
-<!--<!DOCTYPE html>-->
-<!--&lt;!&ndash;<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">&ndash;&gt;-->
-<!--<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">-->
-
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>Hello Security</title>-->
-<!--    <link rel="stylesheet" th:href="@{/css/h.css}" />-->
-<!--</head>-->
-
-<!--<body>-->
-<!--<h1 th:text="'Hello'">Hello</h1>-->
-<!--</body>-->
-
-<!--</html>-->
-
-
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
@@ -59,7 +42,12 @@
         <li th:each="role : ${role}" th:text="${role.roleName}"></li>
     </ul>
 
-    <a href="/logout">Logout</a>
+    <form th:action="@{/logout}" th:method="POST">
+        <input type="submit" value="Logout"/>
+    </form>
+    <div th:if="${isAdmin}">
+        <a th:href="@{/admin}">Admin page</a>
+    </div>
 </div>
 </body>
 

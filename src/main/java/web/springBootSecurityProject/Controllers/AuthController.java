@@ -1,4 +1,4 @@
-package web.springBootSecurityProject.helloController;
+package web.springBootSecurityProject.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,15 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import web.springBootSecurityProject.models.Role;
 import web.springBootSecurityProject.models.User;
-import web.springBootSecurityProject.repositories.RoleRepositories;
 import web.springBootSecurityProject.services.RoleService;
-import web.springBootSecurityProject.services.RoleServiceImpl;
 import web.springBootSecurityProject.services.UserServiceImpl;
 import web.springBootSecurityProject.util.UserValidator;
 
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/auth")

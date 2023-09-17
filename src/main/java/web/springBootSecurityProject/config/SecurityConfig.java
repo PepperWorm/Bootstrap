@@ -15,36 +15,39 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService service;
+    private final SuccessUserHandler handler;
     @Autowired
-    public SecurityConfig(UserDetailsService service) {
+    public SecurityConfig(UserDetailsService service, SuccessUserHandler handler) {
         this.service = service;
+        this.handler = handler;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf()
-                .disable()
                 .authorizeRequests()
-                .antMatchers("/auth/home","/auth/login", "/auth/registration", "/error").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/admin/edit/**").hasRole("ADMIN")
+                .antMatchers("/admin/delete/**").hasRole("ADMIN")
+                .antMatchers("/index/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/auth/home", "/auth/login", "/auth/registration", "/error").permitAll()
+                .anyRequest().hasAnyRole("ADMIN", "USER")
                 .and()
                 .formLogin()
-                .loginPage("/auth/home")
-                .loginProcessingUrl("/process_login")
-                .defaultSuccessUrl("/index", true)
+                .loginPage("/auth/home") // Указать страницу входа
+                .loginProcessingUrl("/process_login") // Указать URL для обработки входа
+                .successHandler(handler) // Указать кастомный обработчик успешной аутентификации
                 .failureUrl("/auth/login?error")
+                .permitAll()
                 .and()
-                .logout().logoutUrl("/logout").logoutSuccessUrl("/auth/home");
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/auth/home")
+                .permitAll();
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) {
-        try {
-            auth.userDetailsService(service);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(service);
     }
 
     @Bean

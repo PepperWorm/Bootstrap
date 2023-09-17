@@ -1,30 +1,29 @@
-package web.springBootSecurityProject.helloController;
+package web.springBootSecurityProject.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import web.springBootSecurityProject.models.Role;
 import web.springBootSecurityProject.models.User;
-import web.springBootSecurityProject.services.UserService;
 import web.springBootSecurityProject.services.UserServiceImpl;
 
 import java.security.Principal;
 
 @Controller
 @RequestMapping("/index")
-public class HelloController {
+public class UserController {
 
     private UserServiceImpl service;
 
     @Autowired
-    public HelloController(UserServiceImpl service) {
+    public UserController(UserServiceImpl service) {
         this.service = service;
     }
 
     @GetMapping
-    public String helloPage(Model model, Principal principal) {
+    public String helloPage(Model model, Principal principal, Authentication authentication) {
         String userName = principal.getName();
         User user = service.getUserByName(userName).orElse(null);
         if (user != null) {
@@ -34,6 +33,13 @@ public class HelloController {
             model.addAttribute("age", user.getAge());
             model.addAttribute("role", user.getRoles());
         }
-        return "index";
+
+        User userAuth = (User) authentication.getPrincipal();
+        boolean isAdmin = user.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+
+        model.addAttribute("isAdmin", isAdmin);
+
+        return "user";
     }
 }
