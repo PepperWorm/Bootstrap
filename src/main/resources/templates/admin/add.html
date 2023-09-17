@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Registration</title>
+  <title>Add User</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -51,6 +51,26 @@
     input[type="submit"]:hover {
       background-color: #0056b3;
     }
+
+    .home-button {
+      background-color: #6c757d;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 3px;
+      text-decoration: none;
+    }
+
+    .home-button:hover {
+      background-color: #495057;
+    }
+
+    select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #e1e1e1;
+      border-radius: 3px;
+    }
   </style>
 </head>
 <body>
@@ -83,18 +103,16 @@
     </div>
 
     <div class="form-group">
-      <input type="submit" value="Sign up">
+      <label for="selectedRole">Select Role:</label>
+      <select name="selectedRole" id="selectedRole">
+        <option value="USER">USER</option>
+        <option value="ADMIN">ADMIN</option>
+      </select>
     </div>
 
-    <div class="form-group">
-      <input type="submit" value="Back" class="home-button" formaction="/admin">
-    </div>
+    <button type="submit" class="btn btn-primary">Sign up</button>
 
-    <label for="selectedRole"></label><select name="selectedRole" id="selectedRole">
-      <option value="USER">USER</option>
-      <option value="ADMIN">ADMIN</option>
-    </select>
-
+    <a href="/admin" class="home-button">Back</a>
   </form>
 </div>
 
