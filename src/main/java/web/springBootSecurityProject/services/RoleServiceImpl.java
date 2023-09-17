@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import web.springBootSecurityProject.models.Role;
-import web.springBootSecurityProject.models.User;
 import web.springBootSecurityProject.repositories.RoleRepositories;
 
 import java.util.Optional;
