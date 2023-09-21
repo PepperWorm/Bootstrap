@@ -1,25 +1,28 @@
 package web.springBootSecurityProject.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import web.springBootSecurityProject.models.User;
 import web.springBootSecurityProject.repositories.UserRepositories;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService{
     private UserRepositories repositories;
+    private PasswordEncoder encoder;
     @Autowired
-    public UserServiceImpl(UserRepositories repositories) {
+    public UserServiceImpl(UserRepositories repositories, PasswordEncoder encoder) {
         this.repositories = repositories;
+        this.encoder = encoder;
     }
 
     @Transactional
     @Override
     public void register(User user) {
+        user.setPassword(encoder.encode(user.getPassword()));
         repositories.save(user);
     }
 
@@ -29,7 +32,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Optional<User> getUserByName(String name) {;
+    public User getUserByName(String name) {
         return repositories.findByUsername(name);
     }
 

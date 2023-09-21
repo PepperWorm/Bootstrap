@@ -1,94 +1,62 @@
 package web.springBootSecurityProject.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import web.springBootSecurityProject.models.Role;
 import web.springBootSecurityProject.models.User;
 import web.springBootSecurityProject.services.RoleService;
 import web.springBootSecurityProject.services.UserService;
-import web.springBootSecurityProject.util.UserValidator;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
     private RoleService roleService;
     private UserService userService;
-    private UserValidator validator;
 
     @Autowired
-    public AdminController(RoleService roleService, UserService userService, UserValidator validator) {
+    public AdminController(RoleService roleService, UserService userService) {
         this.roleService = roleService;
         this.userService = userService;
-        this.validator = validator;
     }
 
-    @GetMapping
-    public String showAllUsers(Model model) {
+    @GetMapping()
+    public String getUsers(@ModelAttribute("user") User user, Model model,
+                           Principal principal) {
+        User user1 = userService.getUserByName(principal.getName());
+
+        model.addAttribute("roles", roleService.getAllRoles());
         model.addAttribute("users", userService.getAllUsers());
-        return "/admin/admin";
+        model.addAttribute("usingUser", user1);
+        return "admin";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") int id) {
+    @PostMapping("/new")
+    public String create(@ModelAttribute("user") @Valid User user) {
+        userService.register(user);
+        return "redirect:/admin";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String edit(Model model, @PathVariable("id") int id) {
+        model.addAttribute("user", userService.getUserById(id));
+        return "redirect:/admin";
+    }
+
+    @PatchMapping("/update/{id}")
+    public String update(@ModelAttribute("user") User user,
+                         @PathVariable("id") int id) {
+
+        userService.update(id, user);
+        return "redirect:/admin";
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") int id) {
         userService.deleteUserById(id);
         return "redirect:/admin";
     }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/edit/{id}")
-    public String editUser(@PathVariable("id") int id, Model model) {
-        User user = userService.getUserById(id);
-        model.addAttribute("user", user);
-        return "/admin/edit";
-    }
-
-    @PostMapping("/edit/{id}")
-    public String editSubmit(@PathVariable("id") int id, @ModelAttribute("user") User updateUser) {
-        userService.update(id, updateUser);
-        return "redirect:/admin";
-    }
-
-    @GetMapping("/add")
-    public String registrationPage(@ModelAttribute("user") User user) {
-        return "/admin/add";
-    }
-
-    @PostMapping("/add")
-    public String performRegistration(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
-                                      @RequestParam("selectedRole") String selectedRole) {
-        validator.validate(user, bindingResult);
-        if (bindingResult.hasErrors()) {
-            return "/admin/add";
-        }
-
-        Role userRole;
-
-        if (selectedRole.equals("ADMIN")) {
-            userRole = roleService.findRoleByName("ROLE_ADMIN").orElseGet(() -> {
-                Role newUserRole = new Role("ROLE_ADMIN");
-                roleService.save(newUserRole);
-                return newUserRole;
-            });
-        } else {
-            userRole  = roleService.findRoleByName("ROLE_USER").orElseGet(() -> {
-                Role newUserRole = new Role("ROLE_USER");
-                roleService.save(newUserRole);
-                return newUserRole;
-            });
-        }
-
-        user.getRoles().add(userRole);
-
-        userService.register(user);
-
-        return "redirect:/admin";
-    }
-
 }

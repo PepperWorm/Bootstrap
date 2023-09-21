@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import web.springBootSecurityProject.models.Role;
 import web.springBootSecurityProject.repositories.RoleRepositories;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,5 +28,10 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public void save(Role role) {
         roleRepositories.save(role);
+    }
+
+    @Override
+    public List<Role> getAllRoles() {
+        return roleRepositories.findAll();
     }
 }

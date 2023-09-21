@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -26,17 +27,17 @@ public class User implements UserDetails {
 
     @NotEmpty(message = "The name should not be empty!")
     @Size(min = 1, max = 50 ,message = "The name is at least one character long!")
-    @Column(name = "userName")
+    @Column(name = "user_name")
     private String username;
-    @Column(name = "lastName")
-    private String lastName;
     @Min(value = 0, message = "age < 0")
     @Column(name = "age")
     private int age;
     @Column(name = "password")
     private String password;
+    @Column(name = "email")
+    private String email;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -64,14 +65,6 @@ public class User implements UserDetails {
 
     public void setUsername(String userName) {
         this.username = userName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastname) {
-        this.lastName = lastname;
     }
 
     public int getAge() {
@@ -121,5 +114,13 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

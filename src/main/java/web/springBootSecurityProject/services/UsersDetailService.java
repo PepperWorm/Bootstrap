@@ -19,11 +19,12 @@ public class UsersDetailService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = repositories.findByUsername(username);
-        if (user.isEmpty()) {
-            throw new UsernameNotFoundException("Not found!");
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+        User user = repositories.findByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found!");
         }
-        return user.get();
+        return user;
     }
 }

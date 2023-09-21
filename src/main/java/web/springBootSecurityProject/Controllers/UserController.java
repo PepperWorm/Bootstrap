@@ -12,7 +12,6 @@ import web.springBootSecurityProject.services.UserServiceImpl;
 import java.security.Principal;
 
 @Controller
-@RequestMapping("/index")
 public class UserController {
 
     private UserServiceImpl service;
@@ -22,24 +21,14 @@ public class UserController {
         this.service = service;
     }
 
-    @GetMapping
-    public String helloPage(Model model, Principal principal, Authentication authentication) {
-        String userName = principal.getName();
-        User user = service.getUserByName(userName).orElse(null);
-        if (user != null) {
-            model.addAttribute("id", user.getId());
-            model.addAttribute("name", user.getUsername());
-            model.addAttribute("lastName", user.getLastName());
-            model.addAttribute("age", user.getAge());
-            model.addAttribute("role", user.getRoles());
-        }
-
-        User userAuth = (User) authentication.getPrincipal();
-        boolean isAdmin = user.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
-
-        model.addAttribute("isAdmin", isAdmin);
-
+    @GetMapping("/user")
+    public String getUsers(Model model, Principal principal) {
+        model.addAttribute("usingUser", service.getUserByName(principal.getName()));
         return "user";
+    }
+
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login";
     }
 }
