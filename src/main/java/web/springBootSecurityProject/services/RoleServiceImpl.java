@@ -12,9 +12,9 @@ import java.util.Optional;
 @Service
 public class RoleServiceImpl implements RoleService{
 
-    private RoleRepositories roleRepositories;
+    private final RoleRepositories roleRepositories;
 
-    @Autowired
+
     public RoleServiceImpl(RoleRepositories roleRepositories) {
         this.roleRepositories = roleRepositories;
     }

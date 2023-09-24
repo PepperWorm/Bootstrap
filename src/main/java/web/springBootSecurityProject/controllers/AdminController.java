@@ -1,6 +1,5 @@
-package web.springBootSecurityProject.Controllers;
+package web.springBootSecurityProject.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +13,10 @@ import java.security.Principal;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-    private RoleService roleService;
-    private UserService userService;
+    private final RoleService roleService;
+    private final UserService userService;
 
-    @Autowired
+
     public AdminController(RoleService roleService, UserService userService) {
         this.roleService = roleService;
         this.userService = userService;
