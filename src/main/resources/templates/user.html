@@ -69,6 +69,7 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Username</th>
+                                        <th>LastName</th>
                                         <th>Age</th>
                                         <th>Email</th>
                                         <th>Roles</th>
@@ -77,6 +78,7 @@
                                     <tr th:each="user : ${usingUser}">
                                         <td th:text="${user.getId}"></td>
                                         <td th:text="${user.getUsername()}"></td>
+                                        <td th:text="${user.getLastName()}"></td>
                                         <td th:text="${user.getAge()}"></td>
                                         <td th:text="${user.getEmail()}"></td>
                                         <td>

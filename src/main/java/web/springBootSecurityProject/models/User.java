@@ -29,6 +29,8 @@ public class User implements UserDetails {
     @Size(min = 1, max = 50 ,message = "The name is at least one character long!")
     @Column(name = "user_name")
     private String username;
+    @Column(name = "last_name")
+    private String LastName;
     @Min(value = 0, message = "age < 0")
     @Column(name = "age")
     private int age;
@@ -122,5 +124,13 @@ public class User implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getLastName() {
+        return LastName;
+    }
+
+    public void setLastName(String lastName) {
+        LastName = lastName;
     }
 }

@@ -73,6 +73,7 @@
                   <tr>
                     <th>ID</th>
                     <th>Username</th>
+                    <th>LastName</th>
                     <th>Age</th>
                     <th>Email</th>
                     <th>Roles</th>
@@ -83,6 +84,7 @@
                   <tr th:each="user : ${users}">
                     <td th:text="${user.getId}"></td>
                     <td th:text="${user.getUsername()}"></td>
+                    <td th:text="${user.getLastName()}"></td>
                     <td th:text="${user.getAge()}"></td>
                     <td th:text="${user.getEmail()}"></td>
                     <td>
@@ -121,6 +123,12 @@
                                       <input type="text" class="form-control"
                                              th:value="${user.username}"
                                              th:name="username" id="username"/>
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="lastName" class="control-label">LastName</label>
+                                      <input type="text" class="form-control"
+                                             th:value="${user.lastName}"
+                                             th:name="lastName" id="lastName"/>
                                     </div>
                                     <div class="form-group">
                                       <label for="age"
@@ -276,9 +284,14 @@
                                th:name="email" id="emailNew"/>
                       </div>
                       <div class="form-group">
-                        <label for="email" class="control-label">Username</label>
+                        <label for="username" class="control-label">Username</label>
                         <input type="text" class="form-control" th:value="${user.username}"
                                th:name="username" id="usernameNew"/>
+                      </div>
+                      <div class="form-group">
+                        <label for="lastName" class="control-label">LastName</label>
+                        <input type="text" class="form-control" th:value="${user.lastName}"
+                               th:name="lastName" id="lastName"/>
                       </div>
                       <div class="form-group">
                         <label for="age" class="control-label">Age</label>
