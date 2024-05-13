@@ -149,15 +149,22 @@
                                              th:value="${user.password}"
                                              th:name="password" id="password">
                                     </div>
+<!--                                    <div class="form-group">-->
+<!--                                      <label for="roles">Role</label>-->
+<!--                                      <select class="form-control form-control-static"-->
+<!--                                              size="2" multiple name="roles"-->
+<!--                                              th:name="roles" id="roles">-->
+<!--                                        <option th:each="role : ${roles}"-->
+<!--                                                th:value="${role.getId()}"-->
+<!--                                                th:text="${role.toString()}">-->
+<!--                                        </option>-->
+<!--                                      </select>-->
+<!--                                    </div>-->
                                     <div class="form-group">
                                       <label for="roles">Role</label>
-                                      <select class="form-control form-control-static"
-                                              size="2" multiple name="roles"
-                                              th:name="roles" id="roles">
-                                        <option th:each="role : ${roles}"
-                                                th:value="${role.getId()}"
-                                                th:text="${role.toString()}">
-                                        </option>
+                                      <select class="form-control form-control-static" size="2" multiple name="roles" th:name="roles" id="roles">
+                                        <option th:each="role : ${roles}" th:value="${role.getId()}" th:text="${role.toString()}"
+                                                th:selected="${user.getRoles().contains(role)}"></option>
                                       </select>
                                     </div>
 
